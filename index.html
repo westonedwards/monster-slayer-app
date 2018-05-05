@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer - Vue</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">YOU</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" :style="{ width: yourHealth + '%' }" style="background-color: green; margin: 0; color: white;">
+                    {{ yourHealth }}
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" :style="{ width: monsterHealth + '%' }" style="background-color: green; margin: 0; color: white;">
+                    {{ monsterHealth }}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="row controls" v-if="!gameInProgress">
+        <div class="small-12 columns">
+            <button id="start-game" @click="gameInProgress = true">START NEW GAME</button>
+        </div>
+    </section>
+    <section class="row controls" v-else>
+        <div class="small-12 columns">
+            <button id="attack" @click="attack()">ATTACK</button>
+            <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>
+            <button id="heal" @click="heal">HEAL</button>
+            <button id="give-up" @click="resetGame">GIVE UP</button>
+        </div>
+    </section>
+    <section class="row log" v-if="gameInProgress">
+        <div class="small-12 columns">
+            <ul>
+                <li v-for="log in healthLog" v-if="healthLog.length > 0">
+                    <template v-for="(amount, action) in log">
+                        <div v-if="action == 'attack'" class="player-turn">YOU {{ action }} FOR {{ amount }} HP</div>
+                        <div v-else-if="action == 'heal'" class="player-turn">YOU {{ action }} FOR {{ amount }} HP</div>
+                        <div v-else class="monster-turn">MONSTER {{ action }} FOR {{ amount }} HP</div>
+                    </template>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+</body>
+<script src="app.js"></script>
+</html>
